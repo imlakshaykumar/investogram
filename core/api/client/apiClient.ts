@@ -2,7 +2,8 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { ZodSchema } from 'zod';
 import { handleApiError } from '.';
-import { BASE_URL } from '@/constants';
+import { BASE_URL, Nullable } from '@/constants';
+import { useAuthStore } from '@/lib';
 
 export interface APIRequestProps<T, D> {
     method: 'get' | 'post' | 'put' | 'delete' | 'patch';
@@ -10,7 +11,7 @@ export interface APIRequestProps<T, D> {
     data?: D;
     schema?: ZodSchema<T>;
     headers?: Record<string, string | null>;
-    accessToken?: string;
+    accessToken?: Nullable<string>;
     signal?: AbortSignal | null;
 }
 
@@ -30,8 +31,7 @@ export async function apiClient<T, D = undefined>({
     accessToken,
     signal = null,
 }: APIRequestProps<T, D>) {
-    const token = accessToken;
-    // const token = accessToken || useAuthStore.getState().token;
+    const token = accessToken || useAuthStore.getState().token;
     const axiosOptions = {
         headers: {
             Authorization: token ? `Bearer ${token}` : undefined,

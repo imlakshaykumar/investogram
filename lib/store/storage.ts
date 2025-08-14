@@ -17,5 +17,5 @@ export const mmkvStorage: StateStorage = {
 }
 
 export const storageKeys = {
-
+    auth: '@auth',
 } as const;

@@ -1,3 +1,4 @@
+import { useAuthStore } from '@/lib';
 import { AxiosError } from 'axios';
 // import { useAuthStore } from '@/lib/store/authStore';
 
@@ -29,7 +30,7 @@ export const handleApiError = (error: AxiosError<any>) => {
 
     // Auth errors
     if ([401, 403].includes(response.status)) {
-        // useAuthStore.getState().resetToken();
+        useAuthStore.getState().resetToken();
         return {
             error: 'Session expired. Please log in again.',
             status: false,
